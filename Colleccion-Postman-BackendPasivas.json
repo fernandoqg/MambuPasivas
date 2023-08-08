@@ -1,0 +1,2933 @@
+{
+	"info": {
+		"_postman_id": "c159007c-8999-40a5-823c-1f8a71b2ba14",
+		"name": "Mambu_Sofka_Automatizado",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21045758"
+	},
+	"item": [
+		{
+			"name": "Gestion_Cliente_A",
+			"item": [
+				{
+					"name": "Gestion_Cliente_Backend",
+					"item": [
+						{
+							"name": "CrearClienteA",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"gen-clientA-id\", jsonData.encodedKey);\r",
+											"postman.setEnvironmentVariable(\"gen-clientA-name\", jsonData.firstName + '  ' + jsonData.lastName);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "default"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"phoneNumber\": \"{{$randomPhoneNumber}}\",\r\n    \"documentId\": \"{{$randomInt}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"gender\": \"MALE\",\r\n    \"address\": \"{{$randomStreetAddress}}\",\r\n    \"preferredLanguage\": \"SPANISH\",\r\n     \"_personalizados\" : {\r\n        \"External_ID\": \"{{$randomUUID}}\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/client",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"client"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RecuperaEcodedProducto",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"gen-producto\", jsonData.encodedKey);\r",
+											"postman.setEnvironmentVariable(\"gen-type\", jsonData.type);\r",
+											"postman.setEnvironmentVariable(\"gen-currencyCode\", jsonData.currencySettings.currencies[0].currencyCode);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/productDeposit/:idProduct",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"productDeposit",
+										":idProduct"
+									],
+									"query": [
+										{
+											"key": "branchId",
+											"value": "nisi paria",
+											"description": "The id of the branch to which the product applies to",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "idProduct",
+											"value": "1099003"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CrearCta_ClienteA",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"gen-id_cta_A\", jsonData.id);\r",
+											"postman.setEnvironmentVariable(\"gen-accountType_A\", jsonData.accountType);\r",
+											"postman.setEnvironmentVariable(\"gen-encodedKeyA\", jsonData.encodedKey);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"accountHolderKey\": \"{{gen-clientA-id}}\",\n  \"accountHolderType\": \"CLIENT\",\n  \"name\": \"Cuenta de Prueba Mambu\",\n  \"productTypeKey\": \"{{gen-producto}}\",\n  \"notes\": \"Cuenta de pruebas creada via api - postman\",\n  \"accountState\": \"APPROVED\",\n  \"accountType\": \"{{gen-type}}\",\n  \"currencyCode\": \"{{gen-currencyCode}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/deposits",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"deposits"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DepositoCta_ClienteA",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 500000,\n  \"transactionDetails\": {\n    \"transactionChannelId\": \"OnlineChannelLocales\"\n  },\n  \"notes\": \"PruebaMambu - Deposito Inicial\",\n  \"paymentOrderId\": \"{{$randomInt}}\",\n  \"externalId\": \"{{$randomUUID}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/deposits/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"deposits",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-id_cta_A}}",
+											"description": "(Required) The id or encoded key of the deposit that the transaction will be created for"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RetiroCta_ClienteA",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 3000,\n  \"transactionDetails\": {\n    \"transactionChannelId\": \"OnlineChannelLocales\"\n  },\n  \"notes\": \"PruebaMambu - Retiro Inicial\",\n  \"paymentOrderId\": \"{{$randomInt}}\",\n  \"externalId\": \"{{$randomUUID}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/withdrawal/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"withdrawal",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-id_cta_A}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Bloqueo_Fondos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"gen-BlockId\", jsonData.externalReferenceId);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 400,\n  \"externalReferenceId\": \"{{$randomUUID}}\",\n  \"notes\": \"Bloquear Fondos\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/blocks/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blocks",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-id_cta_A}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar_Bloqueos",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blocks/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blocks",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Bloquear_Cuenta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"action\": \"LOCK\",\n  \"notes\": \"-Cuenta Bloqueada\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/changeState/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"changeState",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Desbloquear_Cuenta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"action\": \"UNLOCK\",\n  \"notes\": \"-Cuenta Desbloqueada\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/changeState/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"changeState",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar_BloqueoCuenta",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{urlmambu}}/deposits/:depositAccountId",
+									"host": [
+										"{{urlmambu}}"
+									],
+									"path": [
+										"deposits",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "EmbargarCuenta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 100,\n  \"blockId\": \"{{gen-BlockId}}\",\n  \"externalId\": \"{{$randomUUID}}\",\n  \"notes\": \"amount seized due to investigation\",\n  \"transactionChannelId\": \"cash\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/seize/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"seize",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Aplicar_Interes",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var accountId = \"8a44c11387b35a930187b390bf121e8b\"",
+											"pm.environment.set(\"accountID\",accountId);",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true,
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"interestApplicationDate\": \"2023-07-16T15:38:18-05:00\",\n  \"isPaymentHolidaysInterest\": true,\n  \"notes\": \"Interes aplicado\",\n  \"paymentHolidaysInterestAmount\": 20\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/applyInterest/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"applyInterest",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{accountID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Busqueda_Depositos",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 600,\n  \"blockId\": \"9e923f6b-9193-4df3-9f19-fb8ab7b3a363\",\n  \"externalId\": \"{{$randomUUID}}\",\n  \"notes\": \"amount seized due to investigation\",\n  \"transactionChannelId\": \"cash\"\n}"
+								},
+								"url": {
+									"raw": "{{urlmambu}}/deposits/:depositAccountId/seizure-transactions",
+									"host": [
+										"{{urlmambu}}"
+									],
+									"path": [
+										"deposits",
+										":depositAccountId",
+										"seizure-transactions"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Busqueda_Retiros",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 600,\n  \"blockId\": \"9e923f6b-9193-4df3-9f19-fb8ab7b3a363\",\n  \"externalId\": \"{{$randomUUID}}\",\n  \"notes\": \"amount seized due to investigation\",\n  \"transactionChannelId\": \"cash\"\n}"
+								},
+								"url": {
+									"raw": "{{urlmambu}}/deposits/:depositAccountId/seizure-transactions",
+									"host": [
+										"{{urlmambu}}"
+									],
+									"path": [
+										"deposits",
+										":depositAccountId",
+										"seizure-transactions"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Auto_Cliente_Backend",
+					"item": [
+						{
+							"name": "CrearClienteA",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"gen-clientA-id\", jsonData.encodedKey);\r",
+											"postman.setEnvironmentVariable(\"gen-clientA-name\", jsonData.firstName + '  ' + jsonData.lastName);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "default"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"phoneNumber\": \"{{$randomPhoneNumber}}\",\r\n    \"documentId\": \"{{$randomInt}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"gender\": \"MALE\",\r\n    \"address\": \"{{$randomStreetAddress}}\",\r\n    \"preferredLanguage\": \"SPANISH\",\r\n     \"_personalizados\" : {\r\n        \"External_ID\": \"{{$randomUUID}}\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/client",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"client"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RecuperaEcodedProducto Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"gen-producto\", jsonData.encodedKey);\r",
+											"postman.setEnvironmentVariable(\"gen-type\", jsonData.type);\r",
+											"postman.setEnvironmentVariable(\"gen-currencyCode\", jsonData.currencySettings.currencies[0].currencyCode);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json"
+									}
+								],
+								"url": {
+									"raw": "{{urlmambu}}/depositproducts/:Idproducto?offset=0&limit=10&paginationDetails=OFF&detailsLevel=FULL",
+									"host": [
+										"{{urlmambu}}"
+									],
+									"path": [
+										"depositproducts",
+										":Idproducto"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "0",
+											"description": "Pagination, index to start searching at when retrieving elements, used in combination with limit to paginate results"
+										},
+										{
+											"key": "limit",
+											"value": "10",
+											"description": "Pagination, the number of elements to retrieve, used in combination with offset to paginate results"
+										},
+										{
+											"key": "paginationDetails",
+											"value": "OFF",
+											"description": "Flag specifying whether the pagination  details should be provided in response headers. Please note that by default it is disabled (OFF), in order to improve the performance of the APIs"
+										},
+										{
+											"key": "detailsLevel",
+											"value": "FULL",
+											"description": "The level of details to retrieve, FULL means the full details of the object will be retrieved (custom fields, address, contact info or any other related object), BASIC will return only the first level elements of the object"
+										},
+										{
+											"key": "branchId",
+											"value": "nisi paria",
+											"description": "The id of the branch to which the product applies to",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "Idproducto",
+											"value": "1099003"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CrearCta_ClienteA",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"gen-id_cta_A\", jsonData.id);\r",
+											"postman.setEnvironmentVariable(\"gen-accountType_A\", jsonData.accountType);\r",
+											"postman.setEnvironmentVariable(\"gen-encodedKeyA\", jsonData.encodedKey);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"accountHolderKey\": \"{{gen-clientA-id}}\",\n  \"accountHolderType\": \"CLIENT\",\n  \"name\": \"Cuenta de Prueba Mambu\",\n  \"productTypeKey\": \"{{gen-producto}}\",\n  \"notes\": \"Cuenta de pruebas creada via api - postman\",\n  \"accountState\": \"APPROVED\",\n  \"accountType\": \"{{gen-type}}\",\n  \"currencyCode\": \"{{gen-currencyCode}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/deposits",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"deposits"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DepositoCta_ClienteA",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 500000,\n  \"transactionDetails\": {\n    \"transactionChannelId\": \"OnlineChannelLocales\"\n  },\n  \"notes\": \"PruebaMambu - Deposito Inicial\",\n  \"paymentOrderId\": \"{{$randomInt}}\",\n  \"externalId\": \"{{$randomUUID}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/deposits/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"deposits",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-id_cta_A}}",
+											"description": "(Required) The id or encoded key of the deposit that the transaction will be created for"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RetiroCta_ClienteA",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 3000,\n  \"transactionDetails\": {\n    \"transactionChannelId\": \"OnlineChannelLocales\"\n  },\n  \"notes\": \"PruebaMambu - Retiro Inicial\",\n  \"paymentOrderId\": \"{{$randomInt}}\",\n  \"externalId\": \"{{$randomUUID}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/withdrawal/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"withdrawal",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-id_cta_A}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Bloqueo_Fondos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"gen-BlockId\", jsonData.externalReferenceId);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 400,\n  \"externalReferenceId\": \"{{$randomUUID}}\",\n  \"notes\": \"Bloquear Fondos\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/blocks/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blocks",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-id_cta_A}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Bloquear_Cuenta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"action\": \"LOCK\",\n  \"notes\": \"-Cuenta Bloqueada\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/changeState/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"changeState",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Desbloquear_Cuenta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"action\": \"UNLOCK\",\n  \"notes\": \"-Cuenta Desbloqueada\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/changeState/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"changeState",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "EmbargarCuenta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 100,\n  \"blockId\": \"{{gen-BlockId}}\",\n  \"externalId\": \"{{$randomUUID}}\",\n  \"notes\": \"amount seized due to investigation\",\n  \"transactionChannelId\": \"cash\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/seize/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"seize",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Aplicar_Interes",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var accountId = \"8a44c11387b35a930187b390bf121e8b\"",
+											"pm.environment.set(\"accountID\",accountId);",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true,
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"interestApplicationDate\": \"2023-07-16T15:38:18-05:00\",\n  \"isPaymentHolidaysInterest\": true,\n  \"notes\": \"Interes aplicado\",\n  \"paymentHolidaysInterestAmount\": 20\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/applyInterest/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"applyInterest",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{accountID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Cliente_Backend Compuesto",
+					"item": [
+						{
+							"name": "OnboardingClient",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"gen-clientA-id\", jsonData.encodedKey);\r",
+											"postman.setEnvironmentVariable(\"gen-clientA-name\", jsonData.firstName + '  ' + jsonData.lastName);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "default"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"phoneNumber\": \"{{$randomPhoneNumber}}\",\r\n    \"documentId\": \"{{$randomInt}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"gender\": \"MALE\",\r\n    \"address\": \"{{$randomStreetAddress}}\",\r\n    \"preferredLanguage\": \"SPANISH\",\r\n     \"_personalizados\" : {\r\n        \"External_ID\": \"{{$randomUUID}}\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/client",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"client"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DepositoCta_ClienteA",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 1500250,\n  \"transactionDetails\": {\n    \"transactionChannelId\": \"OnlineChannelLocales\"\n  },\n  \"notes\": \"PruebaMambu - Deposito Inicial\",\n  \"paymentOrderId\": \"{{$randomInt}}\",\n  \"externalId\": \"{{$randomUUID}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/deposits/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"deposits",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-id_cta_A}}",
+											"description": "(Required) The id or encoded key of the deposit that the transaction will be created for"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RetiroCta_ClienteA",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 3000,\n  \"transactionDetails\": {\n    \"transactionChannelId\": \"OnlineChannelLocales\"\n  },\n  \"notes\": \"PruebaMambu - Retiro Inicial\",\n  \"paymentOrderId\": \"{{$randomInt}}\",\n  \"externalId\": \"{{$randomUUID}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/withdrawal/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"withdrawal",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-id_cta_A}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Bloqueo_Fondos",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 400,\n  \"externalReferenceId\": \"{{$randomUUID}}\",\n  \"notes\": \"Bloquear Fondos\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{urlmambu}}/deposits/:depositAccountId/blocks",
+									"host": [
+										"{{urlmambu}}"
+									],
+									"path": [
+										"deposits",
+										":depositAccountId",
+										"blocks"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar_Bloqueos",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blocks/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blocks",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Bloquear_Cuenta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"action\": \"LOCK\",\n  \"notes\": \"-Cuenta Bloqueada\"\n}"
+								},
+								"url": {
+									"raw": "{{urlmambu}}/deposits/:depositAccountId/changeState",
+									"host": [
+										"{{urlmambu}}"
+									],
+									"path": [
+										"deposits",
+										":depositAccountId",
+										"changeState"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar_BloqueoCuenta",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{urlmambu}}/deposits/:depositAccountId",
+									"host": [
+										"{{urlmambu}}"
+									],
+									"path": [
+										"deposits",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "EmbargarCuenta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 600,\n  \"blockId\": \"9e923f6b-9193-4df3-9f19-fb8ab7b3a363\",\n  \"externalId\": \"{{$randomUUID}}\",\n  \"notes\": \"amount seized due to investigation\",\n  \"transactionChannelId\": \"cash\"\n}"
+								},
+								"url": {
+									"raw": "{{urlmambu}}/deposits/:depositAccountId/seizure-transactions",
+									"host": [
+										"{{urlmambu}}"
+									],
+									"path": [
+										"deposits",
+										":depositAccountId",
+										"seizure-transactions"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Aplicar_Interes",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var accountId = \"8a44c11387b35a930187b390bf121e8b\"",
+											"pm.environment.set(\"accountID\",accountId);",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true,
+									"content-type": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"interestApplicationDate\": \"2023-07-16T15:38:18-05:00\",\n  \"isPaymentHolidaysInterest\": true,\n  \"notes\": \"Interes aplicado\",\n  \"paymentHolidaysInterestAmount\": 20\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/applyInterest/:depositAccountId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"applyInterest",
+										":depositAccountId"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{accountID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Busqueda_Depositos",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 600,\n  \"blockId\": \"9e923f6b-9193-4df3-9f19-fb8ab7b3a363\",\n  \"externalId\": \"{{$randomUUID}}\",\n  \"notes\": \"amount seized due to investigation\",\n  \"transactionChannelId\": \"cash\"\n}"
+								},
+								"url": {
+									"raw": "{{urlmambu}}/deposits/:depositAccountId/seizure-transactions",
+									"host": [
+										"{{urlmambu}}"
+									],
+									"path": [
+										"deposits",
+										":depositAccountId",
+										"seizure-transactions"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Busqueda_Retiros",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.mambu.v2+json",
+										"type": "text"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "{{$randomUUID}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 600,\n  \"blockId\": \"9e923f6b-9193-4df3-9f19-fb8ab7b3a363\",\n  \"externalId\": \"{{$randomUUID}}\",\n  \"notes\": \"amount seized due to investigation\",\n  \"transactionChannelId\": \"cash\"\n}"
+								},
+								"url": {
+									"raw": "{{urlmambu}}/deposits/:depositAccountId/seizure-transactions",
+									"host": [
+										"{{urlmambu}}"
+									],
+									"path": [
+										"deposits",
+										":depositAccountId",
+										"seizure-transactions"
+									],
+									"variable": [
+										{
+											"key": "depositAccountId",
+											"value": "{{gen-encodedKeyA}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CrearClienteA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"gen-clientA-id\", jsonData.encodedKey);\r",
+									"postman.setEnvironmentVariable(\"gen-clientA-name\", jsonData.firstName + '  ' + jsonData.lastName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json",
+								"type": "default"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"phoneNumber\": \"{{$randomPhoneNumber}}\",\r\n    \"documentId\": \"{{$randomInt}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"gender\": \"MALE\",\r\n    \"address\": \"{{$randomStreetAddress}}\",\r\n    \"preferredLanguage\": \"SPANISH\",\r\n     \"_personalizados\" : {\r\n        \"External_ID\": \"{{$randomUUID}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlmambu}}/clients/",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"clients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RecuperaEcodedProducto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"gen-producto\", jsonData.encodedKey);\r",
+									"postman.setEnvironmentVariable(\"gen-type\", jsonData.type);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/productDeposit/:idProduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"productDeposit",
+								":idProduct"
+							],
+							"query": [
+								{
+									"key": "branchId",
+									"value": "nisi paria",
+									"description": "The id of the branch to which the product applies to",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "idProduct",
+									"value": "1099003"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RecuperaEcodedProducto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"gen-producto\", jsonData.encodedKey);\r",
+									"postman.setEnvironmentVariable(\"gen-type\", jsonData.type);\r",
+									"postman.setEnvironmentVariable(\"gen-currencyCode\", jsonData.currencySettings.currencies[0].currencyCode);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json"
+							}
+						],
+						"url": {
+							"raw": "{{urlmambu}}/depositproducts/:Idproducto?offset=0&limit=10&paginationDetails=OFF&detailsLevel=FULL",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"depositproducts",
+								":Idproducto"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Pagination, index to start searching at when retrieving elements, used in combination with limit to paginate results"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Pagination, the number of elements to retrieve, used in combination with offset to paginate results"
+								},
+								{
+									"key": "paginationDetails",
+									"value": "OFF",
+									"description": "Flag specifying whether the pagination  details should be provided in response headers. Please note that by default it is disabled (OFF), in order to improve the performance of the APIs"
+								},
+								{
+									"key": "detailsLevel",
+									"value": "FULL",
+									"description": "The level of details to retrieve, FULL means the full details of the object will be retrieved (custom fields, address, contact info or any other related object), BASIC will return only the first level elements of the object"
+								},
+								{
+									"key": "branchId",
+									"value": "nisi paria",
+									"description": "The id of the branch to which the product applies to",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "Idproducto",
+									"value": "1099003"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CrearCta_ClienteA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"gen-id_cta_A\", jsonData.id);\r",
+									"postman.setEnvironmentVariable(\"gen-accountType_A\", jsonData.accountType);\r",
+									"postman.setEnvironmentVariable(\"gen-encodedKeyA\", jsonData.encodedKey);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"accountHolderKey\": \"{{gen-clientA-id}}\",\n  \"accountHolderType\": \"CLIENT\",\n  \"name\": \"Cuenta de Prueba Mambu\",\n  \"productTypeKey\": \"{{gen-producto}}\",\n  \"notes\": \"Cuenta de pruebas creada via api - postman\",\n  \"accountState\": \"APPROVED\",\n  \"accountType\": \"{{gen-type}}\",\n  \"currencyCode\": \"{{gen-currencyCode}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DepositoCta_ClienteA",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": {{$randomInt}},\n  \"transactionDetails\": {\n    \"transactionChannelId\": \"OnlineChannelLocales\"\n  },\n  \"notes\": \"PruebaMambu - Deposito Inicial\",\n  \"paymentOrderId\": \"{{$randomInt}}\",\n  \"externalId\": \"{{$randomUUID}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId/deposit-transactions",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId",
+								"deposit-transactions"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{gen-id_cta_A}}",
+									"description": "(Required) The id or encoded key of the deposit that the transaction will be created for"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RetiroCta_ClienteA",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 98,\n  \"transactionDetails\": {\n    \"transactionChannelId\": \"OnlineChannelLocales\"\n  },\n  \"notes\": \"PruebaMambu - Retiro Inicial\",\n  \"paymentOrderId\": \"{{$randomInt}}\",\n  \"externalId\": \"{{$randomUUID}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId/withdrawal-transactions",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId",
+								"withdrawal-transactions"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{gen-id_cta_A}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bloqueo_Fondos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"gen-BlockId\", jsonData.externalReferenceId);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 200,\n  \"externalReferenceId\": \"{{$randomUUID}}\",\n  \"notes\": \"Bloquear Fondos\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId/blocks",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId",
+								"blocks"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{gen-encodedKeyA}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar_Bloqueos",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Bloquear_Cuenta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json",
+								"type": "text"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"action\": \"LOCK\",\n  \"notes\": \"-Cuenta Bloqueada\"\n}"
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{gen-encodedKeyA}}:changeState"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Desbloquear_Cuenta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json",
+								"type": "text"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"action\": \"LOCK\",\n  \"notes\": \"-Cuenta Bloqueada\"\n}"
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId/changeState",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId",
+								"changeState"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{gen-encodedKeyA}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar_BloqueoCuenta",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json",
+								"type": "text"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{gen-encodedKeyA}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EmbargarCuenta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json",
+								"type": "text"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 600,\n  \"blockId\": \"9e923f6b-9193-4df3-9f19-fb8ab7b3a363\",\n  \"externalId\": \"{{$randomUUID}}\",\n  \"notes\": \"amount seized due to investigation\",\n  \"transactionChannelId\": \"cash\"\n}"
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId/seizure-transactions",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId",
+								"seizure-transactions"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{gen-encodedKeyA}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Aplicar_Interes",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var accountId = \"8a44c11387b35a930187b390bf121e8b\"",
+									"pm.environment.set(\"accountID\",accountId);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json",
+								"type": "text"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"interestApplicationDate\": \"2023-06-26T15:38:18-05:00\",\n  \"isPaymentHolidaysInterest\": true,\n  \"notes\": \"Interes aplicado\",\n  \"paymentHolidaysInterestAmount\": 20\n}"
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{accountID}}:applyInterest"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busqueda_Depositos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json",
+								"type": "text"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 600,\n  \"blockId\": \"9e923f6b-9193-4df3-9f19-fb8ab7b3a363\",\n  \"externalId\": \"{{$randomUUID}}\",\n  \"notes\": \"amount seized due to investigation\",\n  \"transactionChannelId\": \"cash\"\n}"
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId/seizure-transactions",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId",
+								"seizure-transactions"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{gen-encodedKeyA}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busqueda_Retiros",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json",
+								"type": "text"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 600,\n  \"blockId\": \"9e923f6b-9193-4df3-9f19-fb8ab7b3a363\",\n  \"externalId\": \"{{$randomUUID}}\",\n  \"notes\": \"amount seized due to investigation\",\n  \"transactionChannelId\": \"cash\"\n}"
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId/seizure-transactions",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId",
+								"seizure-transactions"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{gen-encodedKeyA}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gestion_Cliente_B",
+			"item": [
+				{
+					"name": "CrearClienteB",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"gen-clientB-id\", jsonData.encodedKey);\r",
+									"postman.setEnvironmentVariable(\"gen-clientB-name\", jsonData.firstName + '  ' + jsonData.lastName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json",
+								"type": "default"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"phoneNumber\": \"{{$randomPhoneNumber}}\",\r\n    \"documentId\": \"{{$randomInt}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"gender\": \"MALE\",\r\n    \"address\": \"{{$randomStreetAddress}}\",\r\n    \"preferredLanguage\": \"SPANISH\",\r\n    \"_personalizados\" : {\r\n        \"External_ID\": \"{{$randomUUID}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlmambu}}/clients/",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"clients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RecuperaEcodedProducto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"gen-productoB\", jsonData.encodedKey);\r",
+									"postman.setEnvironmentVariable(\"gen-typeB\", jsonData.type);\r",
+									"postman.setEnvironmentVariable(\"gen-currencyCodeB\", jsonData.currencySettings.currencies[0].currencyCode);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json"
+							}
+						],
+						"url": {
+							"raw": "{{urlmambu}}/depositproducts/:Idproducto?offset=0&limit=10&paginationDetails=OFF&detailsLevel=FULL",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"depositproducts",
+								":Idproducto"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Pagination, index to start searching at when retrieving elements, used in combination with limit to paginate results"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Pagination, the number of elements to retrieve, used in combination with offset to paginate results"
+								},
+								{
+									"key": "paginationDetails",
+									"value": "OFF",
+									"description": "Flag specifying whether the pagination  details should be provided in response headers. Please note that by default it is disabled (OFF), in order to improve the performance of the APIs"
+								},
+								{
+									"key": "detailsLevel",
+									"value": "FULL",
+									"description": "The level of details to retrieve, FULL means the full details of the object will be retrieved (custom fields, address, contact info or any other related object), BASIC will return only the first level elements of the object"
+								},
+								{
+									"key": "branchId",
+									"value": "nisi paria",
+									"description": "The id of the branch to which the product applies to",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "Idproducto",
+									"value": "1099003"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CrearCta_ClienteB",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"gen-id_cta_B\", jsonData.id);\r",
+									"postman.setEnvironmentVariable(\"gen-accountType_B\", jsonData.accountType);\r",
+									"postman.setEnvironmentVariable(\"gen-encodedKeyB\", jsonData.encodedKey);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"accountHolderKey\": \"{{gen-clientB-id}}\",\n  \"accountHolderType\": \"CLIENT\",\n  \"name\": \"Cuenta de Prueba Mambu\",\n  \"productTypeKey\": \"{{gen-productoB}}\",\n  \"notes\": \"Cuenta de pruebas creada via api - postman\",\n  \"accountState\": \"APPROVED\",\n  \"accountType\": \"{{gen-typeB}}\",\n  \"currencyCode\": \"{{gen-currencyCodeB}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DepositoCta_ClienteB",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": {{$randomInt}},\n  \"transactionDetails\": {\n    \"transactionChannelId\": \"OnlineChannelLocales\"\n  },\n  \"notes\": \"PruebaMambu - Deposito Inicial\",\n  \"paymentOrderId\": \"{{$randomInt}}\",\n  \"externalId\": \"{{$randomUUID}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId/deposit-transactions",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId",
+								"deposit-transactions"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{gen-id_cta_B}}",
+									"description": "(Required) The id or encoded key of the deposit that the transaction will be created for"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transferencias",
+			"item": [
+				{
+					"name": "Transferencia_A__B",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 50,\n  \"externalId\": \"{{$randomUUID}}\",\n  \"notes\": \"Prueba_Transaccion_A_B\",\n  \"paymentOrderId\": \"{{$randomUUID}}\",\n  \"transferDetails\": {\n    \"linkedAccountId\": \"{{gen-id_cta_B}}\",\n    \"linkedAccountKey\": \"{{gen-encodedKeyB}}\",\n    \"linkedAccountType\": \"DEPOSIT\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId/transfer-transactions",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId",
+								"transfer-transactions"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{gen-id_cta_A}}",
+									"description": "(Required) The id or encoded key of the deposit that the transaction will be created for"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Transferencia_B__A",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Key that can be used to support idempotency on this POST. Must be a valid UUID(version 4 is recommended) string and can only be used with the exact same request. Can be used in retry mechanisms to prevent double posting.",
+								"key": "Idempotency-Key",
+								"value": "{{$randomUUID}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.mambu.v2+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 90,\n  \"externalId\": \"{{$randomUUID}}\",\n  \"notes\": \"Prueba_Transaccion_A_B\",\n  \"paymentOrderId\": \"{{$randomUUID}}\",\n  \"transferDetails\": {\n    \"linkedAccountId\": \"{{gen-id_cta_A}}\",\n    \"linkedAccountKey\": \"{{gen-encodedKeyA}}\",\n    \"linkedAccountType\": \"DEPOSIT\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlmambu}}/deposits/:depositAccountId/transfer-transactions",
+							"host": [
+								"{{urlmambu}}"
+							],
+							"path": [
+								"deposits",
+								":depositAccountId",
+								"transfer-transactions"
+							],
+							"variable": [
+								{
+									"key": "depositAccountId",
+									"value": "{{gen-id_cta_B}}",
+									"description": "(Required) The id or encoded key of the deposit that the transaction will be created for"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{pass}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{user}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
